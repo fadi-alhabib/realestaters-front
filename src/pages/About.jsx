@@ -9,11 +9,7 @@ const About = () => {
       <Banner
         bannerBg={""}
         bannerImage={bannerImage}
-        title={
-          <Text fontSize={"5xl"} width={"60%"}>
-            Our Journey
-          </Text>
-        }
+        title={<Text fontSize={"5xl"}>Our Journey</Text>}
         subTitle={
           <Text fontSize={"xl"} width={"60%"}>
             Our story is one of continuous growth and evolution. We started as a

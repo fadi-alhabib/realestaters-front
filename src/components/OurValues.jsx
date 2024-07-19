@@ -5,18 +5,32 @@ import { FaUserGroup } from "react-icons/fa6";
 
 const OurValues = () => {
   return (
-    <VStack justify={"space-between"} p={8} textAlign={"center"}>
+    <VStack
+      justify="space-between"
+      p={{ base: 4, md: 8 }}
+      textAlign="center"
+      spacing={8}
+    >
       <Box>
-        <Text fontSize={"5xl"} fontWeight={"bold"}>
+        <Text fontSize={{ base: "3xl", md: "5xl" }} fontWeight="bold">
           Our Values
         </Text>
-        <Text fontSize={"lg"} color={"grey"} mb={10}>
+        <Text fontSize={{ base: "md", md: "lg" }} color="grey" mb={10}>
           Our story is one of continuous growth and evolution. We started as a
           small team with big dreams, determined to create a real estate
           platform that transcended the ordinary.
         </Text>
       </Box>
-      <HStack justify="center" gap={4}>
+      <Grid
+        templateColumns={{
+          base: "1fr",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(4, 1fr)",
+        }}
+        gap={4}
+        width="100%"
+        justifyItems="center"
+      >
         <ValueCard
           icon={FaStar}
           title="Trust"
@@ -37,7 +51,7 @@ const OurValues = () => {
           title="Our Commitment"
           text="We are dedicated to providing you with the highest level of service, professionalism, and support."
         />
-      </HStack>
+      </Grid>
     </VStack>
   );
 };

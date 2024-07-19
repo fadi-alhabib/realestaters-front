@@ -13,7 +13,6 @@ const useData = (endpoint, requestConfig, dependencies) => {
       apiService
         .get(endpoint, { signal: controller.signal, ...requestConfig })
         .then((response) => {
-          console.log(response.data.estate);
           setData(response.data);
           setLoading(false);
         })

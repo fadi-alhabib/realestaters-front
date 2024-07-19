@@ -1,19 +1,23 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack, Stack } from "@chakra-ui/react";
 import { FaAward, FaHandshake, FaSmile } from "react-icons/fa"; // Example icons
 import AchievementCard from "./AchievmentCard";
 
 const AchievementsSection = () => {
   return (
-    <Box p={10} textAlign={"center"}>
-      <Text fontSize="5xl" fontWeight="bold" mb={2}>
+    <Box p={{ base: 5, md: 10 }} textAlign="center">
+      <Text fontSize={{ base: "3xl", md: "5xl" }} fontWeight="bold" mb={2}>
         Our Achievements
       </Text>
-      <Text fontSize={"lg"} color={"grey"} mb={10}>
+      <Text fontSize={{ base: "md", md: "lg" }} color="grey" mb={10}>
         Our story is one of continuous growth and evolution. We started as a
         small team with big dreams, determined to create a real estate platform
         that transcended the ordinary.
       </Text>
-      <Flex justify="center">
+      <Stack
+        direction={{ base: "column", md: "row" }}
+        justify="center"
+        spacing={8}
+      >
         <AchievementCard
           icon={FaAward}
           title="10+ Years of Excellence"
@@ -29,7 +33,7 @@ const AchievementsSection = () => {
           title="Industry Recognition"
           text="We've earned the respect of our peers and industry leaders, with accolades and awards that reflect our commitment to excellence."
         />
-      </Flex>
+      </Stack>
     </Box>
   );
 };

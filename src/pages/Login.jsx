@@ -28,6 +28,8 @@ function LoginForm() {
         return "/login_as_customer";
       case "Seller":
         return "/login_as_seller";
+      case "Admin":
+        return "/login_as_admin";
     }
   };
   const toast = useToast();
@@ -55,13 +57,15 @@ function LoginForm() {
           position: "top-right",
         });
         localStorage.setItem("token", `Bearer ${response.data.token}`);
-        localStorage.setItem("user", response.data.user);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         console.log(response.data.user);
-        if (response.data.user.type) {
+        if (response.data.user.type === "Seller") {
           navigate("/seller");
-          return;
+        } else if (response.data.user.type === "Admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
         }
-        navigate("/");
       })
       .catch((error) => {});
   };

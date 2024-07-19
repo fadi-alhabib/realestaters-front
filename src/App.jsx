@@ -15,6 +15,10 @@ import SelectLocation from "./pages/seller/add-estate/SelectLocation";
 
 import SellerNavbar from "./components/SellerNavbar";
 import ChatScreen from "./pages/Chat";
+import EditPropertyForm from "./pages/seller/EditPropertyForm";
+import Services from "./pages/Services";
+import AdminProperties from "./pages/admin/AdminProperties";
+import AdminPropertyDetails from "./pages/admin/AdminPropertyDetails";
 
 function App() {
   return (
@@ -32,6 +36,7 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/properties" element={<PropertiesList />} />
+                  <Route path="/services" element={<Services />} />
                   <Route path="/property/:id" element={<PropertyDetails />} />
                   <Route path="/chat" element={<ChatScreen />} />
                 </Routes>
@@ -51,6 +56,10 @@ function App() {
                   />
                   <Route path="/inbox" element={<ChatScreen />} />
                   <Route
+                    path="/estates/:id/edit"
+                    element={<EditPropertyForm />}
+                  />
+                  <Route
                     path="/add-property/*"
                     element={
                       <Routes>
@@ -65,6 +74,21 @@ function App() {
                         />
                       </Routes>
                     }
+                  />
+                </Routes>
+              </>
+            }
+          />
+          <Route
+            path="/admin/*"
+            element={
+              <>
+                {/* <AdminNavbar /> */}
+                <Routes>
+                  <Route path="/" element={<AdminProperties />} />
+                  <Route
+                    path="/property/:id"
+                    element={<AdminPropertyDetails />}
                   />
                 </Routes>
               </>

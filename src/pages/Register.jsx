@@ -32,7 +32,7 @@ function BuyerTabPanel() {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("type", "Seller");
+    formData.append("type", "Customer");
     formData.append("fullname", fullnameRef.current.value);
     formData.append("email", emailRef.current.value);
     formData.append("password", passwordRef.current.value);

@@ -24,12 +24,12 @@ import {
   FaEdit,
 } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import useData from "../hooks/useData";
+import useData from "../../hooks/useData";
 import { BsChat } from "react-icons/bs";
-import ShowMapLocation from "../components/ShowMapLocation";
-import apiService from "../services/api-service";
+import ShowMapLocation from "../../components/ShowMapLocation";
+import apiService from "../../services/api-service";
 
-const PropertyDetails = () => {
+const AdminPropertyDetails = () => {
   const { id } = useParams();
   const { data, error, isLoading } = useData(`estates/${id}`);
   const token = localStorage.getItem("token");
@@ -49,10 +49,6 @@ const PropertyDetails = () => {
         console.log(response.data);
         navigate("/chat", { state: response.data });
       });
-  };
-
-  const handleEdit = () => {
-    navigate(`/seller/estates/${id}/edit`);
   };
 
   return (
@@ -88,22 +84,28 @@ const PropertyDetails = () => {
                 ${data.estate.price.toLocaleString()}
               </Text>
             </Box>
-            {user.type === "Seller" && (
-              <Button
-                onClick={handleEdit}
-                my={6}
-                size="lg"
-                leftIcon={<Icon as={FaEdit} />}
-                _hover={{ bg: "brand", transform: "scale(1.05)" }}
-                _active={{ bg: "brand" }}
-                boxShadow="lg"
-              >
-                Edit Property
-              </Button>
-            )}
           </Flex>
 
           <Box bg="black" p={6} borderRadius="md" boxShadow="xl">
+            <Box mb={8}>
+              <Heading mb={3}>Seller ID:</Heading>
+              <Image src={data.estate.user.id_image} width={"100%"} />
+            </Box>
+            <Box mb={8}>
+              <Heading mb={3}>Validation Papers:</Heading>
+              <Carousel showArrows showThumbs={false} infiniteLoop autoPlay>
+                {data.estate.property_images.map((image) => (
+                  <Image
+                    key={image.id}
+                    src={image.image_path}
+                    alt={`Property image ${image.id}`}
+                    borderRadius="md"
+                    height={{ base: "30vh", md: "40vh", lg: "50vh" }}
+                    fit="fill"
+                  />
+                ))}
+              </Carousel>
+            </Box>
             <Box mb={8}>
               <Carousel showArrows showThumbs={false} infiniteLoop autoPlay>
                 {data.estate.estate_images.map((image) => (
@@ -214,13 +216,6 @@ const PropertyDetails = () => {
                   />
                   <Text fontSize="3xl">{data.estate.user.fullname}</Text>
                 </HStack>
-                <Icon
-                  onClick={handleChat}
-                  as={BsChat}
-                  fontSize="4xl"
-                  color="brand"
-                  cursor="pointer"
-                />
               </HStack>
             )}
 
@@ -235,4 +230,4 @@ const PropertyDetails = () => {
   );
 };
 
-export default PropertyDetails;
+export default AdminPropertyDetails;

@@ -9,13 +9,10 @@ import {
   Text,
   Wrap,
 } from "@chakra-ui/react";
-import React from "react";
 import { FaBath, FaBed, FaCar, FaHome, FaMapMarkerAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const PropertyCard = ({ estate }) => {
-  const token = localStorage.getItem("token");
-
+const AdminPropertyCard = ({ estate }) => {
   return (
     <Box
       maxW={{ base: "100%", sm: "sm" }}
@@ -92,7 +89,7 @@ const PropertyCard = ({ estate }) => {
             </Text>
           </Box>
 
-          <Link to={`/property/${estate.id}`}>
+          <Link to={`/admin/property/${estate.id}`}>
             <Button colorScheme="purple" w="full">
               View Property Details
             </Button>
@@ -103,4 +100,4 @@ const PropertyCard = ({ estate }) => {
   );
 };
 
-export default PropertyCard;
+export default AdminPropertyCard;

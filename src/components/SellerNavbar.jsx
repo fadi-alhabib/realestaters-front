@@ -14,6 +14,7 @@ import apiService from "../services/api-service";
 const SellerNavbar = () => {
   const navigate = useNavigate();
   const toast = useToast();
+  const token = localStorage.getItem("token");
   const handleLogout = () => {
     apiService
       .post("/logout", null, {

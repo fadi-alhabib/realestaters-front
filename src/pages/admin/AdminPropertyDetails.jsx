@@ -1,32 +1,31 @@
 import {
-  Box,
-  Flex,
-  Image,
-  Text,
+  Avatar,
   Badge,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Divider,
+  Flex,
   HStack,
   Heading,
-  Divider,
-  Container,
   Icon,
-  CircularProgress,
-  Avatar,
-  Button,
+  Image,
+  Text,
 } from "@chakra-ui/react";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {
-  FaMapMarkerAlt,
-  FaBed,
   FaBath,
-  FaRulerCombined,
+  FaBed,
   FaCar,
   FaEdit,
+  FaMapMarkerAlt,
+  FaRulerCombined,
 } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import useData from "../../hooks/useData";
-import { BsChat } from "react-icons/bs";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useNavigate, useParams } from "react-router-dom";
 import ShowMapLocation from "../../components/ShowMapLocation";
+import useData from "../../hooks/useData";
 import apiService from "../../services/api-service";
 
 const AdminPropertyDetails = () => {
@@ -35,19 +34,19 @@ const AdminPropertyDetails = () => {
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-
-  const handleChat = () => {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
+  const handleApproveProperty = () => {
     apiService
-      .get(`/chat/${data.estate.user.id}`, {
-        headers: { Authorization: token },
-      })
+      .put(
+        `estate/${id}/approve`,
+        {},
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
       .then((response) => {
-        console.log(response.data);
-        navigate("/chat", { state: response.data });
+        navigate("/admin");
       });
   };
 
@@ -84,17 +83,34 @@ const AdminPropertyDetails = () => {
                 ${data.estate.price.toLocaleString()}
               </Text>
             </Box>
+            {data.estate.active !== 1 && (
+              <Button
+                onClick={handleApproveProperty}
+                my={6}
+                size="lg"
+                leftIcon={<Icon as={FaEdit} />}
+                _hover={{ bg: "green", transform: "scale(1.05)" }}
+                _active={{ bg: "green" }}
+                boxShadow="lg"
+              >
+                Approve Property
+              </Button>
+            )}
           </Flex>
 
           <Box bg="black" p={6} borderRadius="md" boxShadow="xl">
             <Box mb={8}>
               <Heading mb={3}>Seller ID:</Heading>
-              <Image src={data.estate.user.id_image} width={"100%"} />
+              <Image
+                src={data.estate.user.id_image}
+                width={"100%"}
+                height={"30vh"}
+              />
             </Box>
             <Box mb={8}>
               <Heading mb={3}>Validation Papers:</Heading>
               <Carousel showArrows showThumbs={false} infiniteLoop autoPlay>
-                {data.estate.property_images.map((image) => (
+                {data.estate.estate_images.map((image) => (
                   <Image
                     key={image.id}
                     src={image.image_path}
@@ -108,7 +124,7 @@ const AdminPropertyDetails = () => {
             </Box>
             <Box mb={8}>
               <Carousel showArrows showThumbs={false} infiniteLoop autoPlay>
-                {data.estate.estate_images.map((image) => (
+                {data.estate.property_images.map((image) => (
                   <Image
                     key={image.id}
                     src={image.image_path}

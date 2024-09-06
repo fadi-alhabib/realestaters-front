@@ -18,31 +18,19 @@ import { Link, useNavigate } from "react-router-dom";
 import apiService from "../services/api-service";
 
 function LoginForm() {
-  const [userType, setUserType] = useState();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const userTypeRef = useRef(null);
-  const getLoginUrl = () => {
-    switch (userType) {
-      case "Customer":
-        return "/login_as_customer";
-      case "Seller":
-        return "/login_as_seller";
-      case "Admin":
-        return "/login_as_admin";
-    }
-  };
+
   const toast = useToast();
   const navigate = useNavigate();
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    const url = getLoginUrl();
 
     const formData = new FormData();
     formData.append("email", emailRef.current.value);
     formData.append("password", passwordRef.current.value);
     apiService
-      .post(url, formData, {
+      .post("/login", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -63,6 +51,8 @@ function LoginForm() {
           navigate("/seller");
         } else if (response.data.user.type === "Admin") {
           navigate("/admin");
+        } else if (response.data.user.type === "ServiceAdmin") {
+          navigate("/service");
         } else {
           navigate("/");
         }
@@ -93,21 +83,6 @@ function LoginForm() {
           placeholder="Enter your Password"
           required
         />
-      </FormControl>
-
-      <FormControl isRequired>
-        <RadioGroup
-          onChange={setUserType}
-          value={userType}
-          colorScheme="purple"
-          mt={5}
-        >
-          <Stack direction="row" justify={"space-between"} width={"full"}>
-            <Radio value="Customer">Customer</Radio>
-            <Radio value="Seller">Seller</Radio>
-            <Radio value="Admin">Admin</Radio>
-          </Stack>
-        </RadioGroup>
       </FormControl>
 
       <Center mt={6}>

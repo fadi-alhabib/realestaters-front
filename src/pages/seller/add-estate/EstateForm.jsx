@@ -10,6 +10,7 @@ import {
   Textarea,
   Select,
 } from "@chakra-ui/react";
+import useEstateCategories from "../../../hooks/useEstatesCategories";
 
 const EstateForm = () => {
   const [estate, setEstate] = useState({
@@ -41,7 +42,7 @@ const EstateForm = () => {
     e.preventDefault();
     navigate("/seller/add-property/select-location", { state: { estate } });
   };
-
+  const { data: categories, error, isLoading } = useEstateCategories();
   return (
     <Box p={20} borderRadius="md">
       <form onSubmit={handleSubmit}>
@@ -50,14 +51,21 @@ const EstateForm = () => {
             <FormLabel>Category</FormLabel>
             <Select
               placeholder="Category"
-              name="category"
-              value={estate.category || ""}
+              name="category_id"
+              value={estate.category_id || ""}
               onChange={handleChange}
             >
-              <option value="Farm">Farm</option>
-              <option value="Appartment">Apartment</option>
-              <option value="House">House</option>
+              {categories &&
+                categories.data.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
             </Select>
+          </FormControl>
+          <FormControl id="title" isRequired>
+            <FormLabel>Title</FormLabel>
+            <Input name="title" value={estate.title} onChange={handleChange} />
           </FormControl>
           <FormControl id="description" isRequired>
             <FormLabel>Description</FormLabel>
@@ -111,10 +119,7 @@ const EstateForm = () => {
               onChange={handleChange}
             />
           </FormControl>
-          <FormControl id="title" isRequired>
-            <FormLabel>Title</FormLabel>
-            <Input name="title" value={estate.title} onChange={handleChange} />
-          </FormControl>
+
           <Button type="submit" colorScheme="teal" size="lg" width="full">
             Next
           </Button>

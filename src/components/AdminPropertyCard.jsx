@@ -25,7 +25,7 @@ const AdminPropertyCard = ({ estate }) => {
       boxShadow="2xl"
     >
       <Image
-        src={estate.estate_images[0].image_path}
+        src={estate.property_images[0].image_path}
         alt="Seaside Serenity Villa"
         height={{ base: "20vh", sm: "30vh" }}
         width="100%"

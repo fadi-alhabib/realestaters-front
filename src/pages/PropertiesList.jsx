@@ -11,23 +11,37 @@ import {
   Input,
   Select,
   Center,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import PropertyCard from "../components/PropertyCard";
 import useEstates from "../hooks/useEstates";
+import useEstateCategories from "../hooks/useEstatesCategories";
 
 const PropertiesList = ({ isSeller }) => {
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({ active: 1, sold: 0 });
   const [search, setSearch] = useState("");
 
   const { data, error, isLoading } = useEstates(filters, search, isSeller);
+  const {
+    data: categories,
+    error: categoriesError,
+    isLoading: categoriesIsLoading,
+  } = useEstateCategories();
 
   const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => {
-      const updatedFilters = { ...prev, [name]: value };
+    const { name, value, type, checked } = e.target;
 
-      if (value === "") {
+    setFilters((prev) => {
+      let updatedFilters = { ...prev };
+
+      if (type === "checkbox") {
+        updatedFilters[name] = checked | 0;
+      } else {
+        updatedFilters[name] = value;
+      }
+
+      if (value === "" && type !== "checkbox") {
         delete updatedFilters[name];
       }
 
@@ -73,9 +87,12 @@ const PropertiesList = ({ isSeller }) => {
             value={filters.category || ""}
             onChange={handleFilterChange}
           >
-            <option value="Farm">Farm</option>
-            <option value="Appartment">Apartment</option>
-            <option value="House">House</option>
+            {categories &&
+              categories.data.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
           </Select>
           <Input
             placeholder="Min Price"
@@ -158,6 +175,24 @@ const PropertiesList = ({ isSeller }) => {
             onChange={handleFilterChange}
           />
         </HStack>
+        {isSeller && (
+          <HStack spacing={4} mt={4}>
+            <Checkbox
+              name="active"
+              isChecked={filters.active}
+              onChange={handleFilterChange}
+            >
+              Active
+            </Checkbox>
+            <Checkbox
+              name="sold"
+              isChecked={filters.sold}
+              onChange={handleFilterChange}
+            >
+              Sold
+            </Checkbox>
+          </HStack>
+        )}
         <Button mt={4} onClick={clearFilters} bgColor={"brand"}>
           Clear Filters
         </Button>

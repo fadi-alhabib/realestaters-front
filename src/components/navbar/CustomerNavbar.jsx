@@ -1,9 +1,9 @@
 import { Box, Button, Flex, HStack, Text, useToast } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import navBg from "../assets/nav-background.png";
-import apiService from "../services/api-service";
-import CustomLink from "./CustomLink";
-const Navbar = () => {
+import navBg from "../../assets/nav-background.png";
+import apiService from "../../services/api-service";
+import CustomLink from "../CustomLink";
+const CustomerNavbar = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const toast = useToast();
@@ -50,6 +50,11 @@ const Navbar = () => {
           <CustomLink to={"/properties"}>
             <Text>Properties</Text>
           </CustomLink>
+          {token && (
+            <CustomLink to={"/chat"}>
+              <Text>Inbox</Text>
+            </CustomLink>
+          )}
         </HStack>
         {token ? (
           <Button bgColor={"brand"} onClick={handleLogout}>
@@ -72,4 +77,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default CustomerNavbar;

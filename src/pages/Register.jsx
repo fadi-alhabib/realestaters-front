@@ -9,6 +9,7 @@ import {
   Heading,
   Image,
   Input,
+  Select,
   Tab,
   TabIndicator,
   TabList,
@@ -18,9 +19,269 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import apiService from "../services/api-service";
+import useServicesCategories from "../hooks/useServicesCategories";
+
+function ServiceOwnerTabPanel() {
+  const { data: categories, error, isLoading } = useServicesCategories();
+
+  const fullnameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const categoryRef = useRef(null);
+  const nameRef = useRef(null);
+  const contactNumberRef = useRef(null);
+  const addressRef = useRef(null);
+  const descriptionRef = useRef(null);
+
+  const [idImagePreview, setIdImagePreview] = useState(null);
+  const [serviceImage, setServiceImage] = useState(null);
+  const idImageRef = useRef(null);
+
+  const [profilePreview, setProfilePreview] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const profileImageRef = useRef(null);
+
+  const handleImageChange = (e, setImage, setPreview) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("type", "ServiceAdmin");
+    formData.append("fullname", fullnameRef.current.value);
+    formData.append("email", emailRef.current.value);
+    formData.append("password", passwordRef.current.value);
+    formData.append("category_id", categoryRef.current.value);
+    formData.append("name", nameRef.current.value);
+    formData.append("contact_number", contactNumberRef.current.value);
+    formData.append("address", addressRef.current.value);
+    formData.append("description", descriptionRef.current.value);
+    formData.append("image", serviceImage);
+    formData.append("profileImage", profileImage);
+
+    apiService
+      .post("/register_service", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        toast({
+          title: `Welcome on board ${response.data.data.name}.`,
+          description: "Please login to your account",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+          colorScheme: "purple",
+          position: "top-right",
+        });
+        navigate("/login");
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          toast({
+            title: "Wrong Email!",
+            description: error.response.data.message,
+            duration: 4000,
+            isClosable: true,
+            position: "top-right",
+            status: "error",
+          });
+          return;
+        }
+        toast({
+          title: "Something Wrong happened.",
+          description: "Please Try again",
+          duration: 4000,
+          isClosable: true,
+          position: "top-right",
+          status: "error",
+        });
+      });
+  };
+
+  return (
+    <form onSubmit={handleFormSubmit}>
+      <FormControl>
+        <Center>
+          <FormLabel fontWeight={"bold"}>Profile Picture</FormLabel>
+        </Center>
+        <Input
+          type="file"
+          hidden
+          name="profileImage"
+          ref={profileImageRef}
+          onChange={(e) =>
+            handleImageChange(e, setProfileImage, setProfilePreview)
+          }
+          required
+        />
+        <Center>
+          <Avatar
+            width={"140px"}
+            height={"140px"}
+            cursor={"pointer"}
+            onClick={() => {
+              profileImageRef.current.click();
+            }}
+            size="xl"
+            src={profilePreview}
+            bg={profilePreview ? "transparent" : "gray.200"}
+          />
+        </Center>
+      </FormControl>
+      <FormControl mt={5}>
+        <FormLabel fontWeight={"bold"}>Full Name</FormLabel>
+        <Input
+          ref={fullnameRef}
+          borderColor={"grey"}
+          focusBorderColor="brand"
+          type="text"
+          placeholder="Enter your Full Name"
+          required
+        />
+      </FormControl>
+      <FormControl mt={5}>
+        <FormLabel fontWeight={"bold"}>Email Address</FormLabel>
+        <Input
+          ref={emailRef}
+          borderColor={"grey"}
+          focusBorderColor="brand"
+          type="email"
+          placeholder="Enter your Email Address"
+          required
+        />
+      </FormControl>
+      <FormControl mt={5}>
+        <FormLabel fontWeight={"bold"}>Password</FormLabel>
+        <Input
+          ref={passwordRef}
+          focusBorderColor="brand"
+          borderColor={"grey"}
+          type="password"
+          placeholder="Enter your Password"
+          required
+        />
+      </FormControl>
+      <FormControl mt={5}>
+        <FormLabel fontWeight={"bold"}>Category</FormLabel>
+        <Select
+          ref={categoryRef}
+          borderColor={"grey"}
+          focusBorderColor="brand"
+          placeholder="Select Category"
+          required
+        >
+          {categories &&
+            categories.data.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+        </Select>
+      </FormControl>
+      <FormControl mt={5}>
+        <FormLabel fontWeight={"bold"}>Service Name</FormLabel>
+        <Input
+          ref={nameRef}
+          borderColor={"grey"}
+          focusBorderColor="brand"
+          type="text"
+          placeholder="Enter Service Name"
+          required
+        />
+      </FormControl>
+      <FormControl mt={5}>
+        <FormLabel fontWeight={"bold"}>Contact Number</FormLabel>
+        <Input
+          ref={contactNumberRef}
+          borderColor={"grey"}
+          focusBorderColor="brand"
+          type="text"
+          placeholder="Enter Contact Number"
+          required
+        />
+      </FormControl>
+      <FormControl mt={5}>
+        <FormLabel fontWeight={"bold"}>Address</FormLabel>
+        <Input
+          ref={addressRef}
+          borderColor={"grey"}
+          focusBorderColor="brand"
+          type="text"
+          placeholder="Enter Address"
+          required
+        />
+      </FormControl>
+      <FormControl mt={5}>
+        <FormLabel fontWeight={"bold"}>Description</FormLabel>
+        <Input
+          ref={descriptionRef}
+          borderColor={"grey"}
+          focusBorderColor="brand"
+          type="text"
+          placeholder="Enter Description"
+          required
+        />
+      </FormControl>
+      <FormControl mt={5}>
+        <Input
+          type="file"
+          hidden
+          name="service_image"
+          ref={idImageRef}
+          onChange={(e) =>
+            handleImageChange(e, setServiceImage, setIdImagePreview)
+          }
+          required
+        />
+        <Box
+          border="1px"
+          borderColor="grey"
+          borderRadius="md"
+          p={4}
+          cursor="pointer"
+          onClick={() => idImageRef.current.click()}
+          _hover={{ borderColor: "brand" }}
+        >
+          <Center>
+            <Text>Upload Service Image</Text>
+          </Center>
+          {idImagePreview && (
+            <Image
+              src={idImagePreview}
+              alt="Image preview"
+              mt={4}
+              fit={"fill"}
+              width={"full"}
+              height={"25vh"}
+            />
+          )}
+        </Box>
+      </FormControl>
+      <Center mt={6}>
+        <Button type="submit" width={"full"} bgColor={"brand"}>
+          Register
+        </Button>
+      </Center>
+    </form>
+  );
+}
 
 function BuyerTabPanel() {
   const fullnameRef = useRef(null);
@@ -307,6 +568,7 @@ function RegisterForm() {
         <TabList>
           <Tab>Customer</Tab>
           <Tab>Seller</Tab>
+          <Tab>Service Owner</Tab>
         </TabList>
         <TabIndicator mt="-1.5px" height="2px" bg="brand" borderRadius="1px" />
         <TabPanels mt={10}>
@@ -315,6 +577,9 @@ function RegisterForm() {
           </TabPanel>
           <TabPanel minWidth={"35vw"}>
             <SellerTabPanel />
+          </TabPanel>
+          <TabPanel minWidth={"35vw"}>
+            <ServiceOwnerTabPanel />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -334,7 +599,7 @@ function LoginSection() {
   return (
     <Box mt={7} alignContent={"start"}>
       <Text>
-        Already have and Account?{" "}
+        Already have an Account?{" "}
         <Link to={"/login"} color={"brand"}>
           <Button variant={"link"} color={"brand"} fontSize={"lg"}>
             Login

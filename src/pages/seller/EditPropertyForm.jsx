@@ -15,12 +15,18 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useData from "../../hooks/useData";
 import apiService from "../../services/api-service";
+import useEstateCategories from "../../hooks/useEstatesCategories";
 
 const EditPropertyForm = () => {
   const { id } = useParams();
   const { data, isLoading } = useData(`estates/${id}`);
   const navigate = useNavigate();
   const toast = useToast();
+  const {
+    data: categories,
+    error,
+    isLoading: isCategoryLoading,
+  } = useEstateCategories();
 
   const [formData, setFormData] = useState({
     description: "",
@@ -31,7 +37,7 @@ const EditPropertyForm = () => {
     number_of_rooms: "",
     bathrooms: "",
     garages: "",
-    category: "",
+    category_id: "",
   });
 
   useEffect(() => {
@@ -180,10 +186,12 @@ const EditPropertyForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="">Select category</option>
-            <option value="Farm">Farm</option>
-            <option value="Appartment">Apartment</option>
-            <option value="House">House</option>
+            {categories &&
+              categories.data.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
           </Select>
         </FormControl>
         <Button colorScheme="teal" type="submit">

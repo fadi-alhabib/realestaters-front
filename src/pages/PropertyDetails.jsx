@@ -28,10 +28,14 @@ import useData from "../hooks/useData";
 import { BsChat } from "react-icons/bs";
 import ShowMapLocation from "../components/ShowMapLocation";
 import apiService from "../services/api-service";
+import { FaMoneyBills } from "react-icons/fa6";
+import { useState } from "react";
 
 const PropertyDetails = () => {
   const { id } = useParams();
-  const { data, error, isLoading } = useData(`estates/${id}`);
+  const [refetch, setRefetch] = useState(false);
+
+  const { data, error, isLoading } = useData(`estates/${id}`, null, [refetch]);
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
@@ -53,6 +57,13 @@ const PropertyDetails = () => {
 
   const handleEdit = () => {
     navigate(`/seller/estates/${id}/edit`);
+  };
+  const handleSold = () => {
+    apiService
+      .put(`estates/${id}/sold`, null, { headers: { Authorization: token } })
+      .then((response) => {
+        setRefetch(true);
+      });
   };
 
   return (
@@ -88,25 +99,40 @@ const PropertyDetails = () => {
                 ${data.estate.price.toLocaleString()}
               </Text>
             </Box>
-            {user.type === "Seller" && (
-              <Button
-                onClick={handleEdit}
-                my={6}
-                size="lg"
-                leftIcon={<Icon as={FaEdit} />}
-                _hover={{ bg: "brand", transform: "scale(1.05)" }}
-                _active={{ bg: "brand" }}
-                boxShadow="lg"
-              >
-                Edit Property
-              </Button>
+            {user && user.type === "Seller" && (
+              <HStack>
+                <Button
+                  onClick={handleEdit}
+                  my={6}
+                  size="lg"
+                  leftIcon={<Icon as={FaEdit} />}
+                  _hover={{ bg: "brand", transform: "scale(1.05)" }}
+                  _active={{ bg: "brand" }}
+                  boxShadow="lg"
+                >
+                  Edit Property
+                </Button>
+                {!data.estate.sold && (
+                  <Button
+                    onClick={handleSold}
+                    my={6}
+                    size="lg"
+                    leftIcon={<Icon as={FaMoneyBills} />}
+                    _hover={{ bg: "green", transform: "scale(1.05)" }}
+                    _active={{ bg: "green" }}
+                    boxShadow="lg"
+                  >
+                    Sold Property
+                  </Button>
+                )}
+              </HStack>
             )}
           </Flex>
 
           <Box bg="black" p={6} borderRadius="md" boxShadow="xl">
             <Box mb={8}>
               <Carousel showArrows showThumbs={false} infiniteLoop autoPlay>
-                {data.estate.estate_images.map((image) => (
+                {data.estate.property_images.map((image) => (
                   <Image
                     key={image.id}
                     src={image.image_path}
@@ -197,7 +223,7 @@ const PropertyDetails = () => {
               </Box>
             </Flex>
 
-            {user.type !== "Seller" && (
+            {user && user.type !== "Seller" && (
               <HStack
                 bg="appGray"
                 p={6}

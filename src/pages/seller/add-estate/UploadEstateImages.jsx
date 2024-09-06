@@ -86,7 +86,7 @@ const EstateImageUpload = () => {
         duration: 5000,
         isClosable: true,
       });
-      navigate("/"); // Navigate to home or another page
+      navigate("/seller");
     } catch (error) {
       toast({
         title: "An error occurred.",
@@ -99,7 +99,7 @@ const EstateImageUpload = () => {
   };
 
   return (
-    <Box p={4} borderWidth={1} borderRadius="md" borderColor="gray.300">
+    <Box p={4}>
       <form onSubmit={handleSubmit}>
         <FormControl id="property-images" mb={4}>
           <FormLabel>Upload Property Images</FormLabel>

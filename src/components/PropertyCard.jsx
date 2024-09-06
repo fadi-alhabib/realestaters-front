@@ -27,12 +27,49 @@ const PropertyCard = ({ estate }) => {
       color="white"
       boxShadow="2xl"
     >
-      <Image
-        src={estate.estate_images[0].image_path}
-        alt="Seaside Serenity Villa"
-        height={{ base: "20vh", sm: "30vh" }}
-        width="100%"
-      />
+      <Box position="relative">
+        <Image
+          src={estate.property_images[0].image_path}
+          alt="Seaside Serenity Villa"
+          height={{ base: "20vh", sm: "30vh" }}
+          width="100%"
+          filter={estate.sold ? "grayscale(100%)" : "none"}
+        />
+        {estate.active === 0 && (
+          <Badge
+            position="absolute"
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            colorScheme="yellow"
+            fontSize="1.2em"
+            p={4}
+            borderRadius="xl"
+            bgColor="yellow.600"
+            color="white"
+            boxShadow="lg"
+          >
+            Pending
+          </Badge>
+        )}
+        {estate.sold === 1 && (
+          <Badge
+            position="absolute"
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            colorScheme="red"
+            fontSize="1.2em"
+            p={4}
+            borderRadius="xl"
+            bgColor="red.600"
+            color="white"
+            boxShadow="lg"
+          >
+            Sold
+          </Badge>
+        )}
+      </Box>
 
       <Box p="6">
         <Stack spacing={3}>
@@ -93,7 +130,7 @@ const PropertyCard = ({ estate }) => {
           </Box>
 
           <Link to={`/property/${estate.id}`}>
-            <Button colorScheme="purple" w="full">
+            <Button colorScheme="purple" w="full" isDisabled={estate.sold}>
               View Property Details
             </Button>
           </Link>

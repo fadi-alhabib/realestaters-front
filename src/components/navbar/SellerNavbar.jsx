@@ -8,8 +8,8 @@ import {
 } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";
-import CustomLink from "./CustomLink";
-import apiService from "../services/api-service";
+import CustomLink from "../CustomLink";
+import apiService from "../../services/api-service";
 
 const SellerNavbar = () => {
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ const SellerNavbar = () => {
         <CustomLink to={"/seller/add-property"}>
           <Text>Add Property</Text>
         </CustomLink>
-        <CustomLink to={"/seller/inbox"}>
+        <CustomLink to={"/chat"}>
           <Text>Inbox</Text>
         </CustomLink>
       </HStack>

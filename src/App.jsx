@@ -1,24 +1,30 @@
 import { Route, Routes } from "react-router-dom";
 
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import CustomerNavbar from "./components/navbar/CustomerNavbar";
+import About from "./pages/About";
+import Home from "./pages/Home";
 import PropertyDetails from "./pages/PropertyDetails";
 
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import PropertiesList from "./pages/PropertiesList";
-import EstateImageUpload from "./pages/seller/add-estate/UploadEstateImages";
+import Register from "./pages/Register";
 import EstateForm from "./pages/seller/add-estate/EstateForm";
 import SelectLocation from "./pages/seller/add-estate/SelectLocation";
+import EstateImageUpload from "./pages/seller/add-estate/UploadEstateImages";
 
-import SellerNavbar from "./components/SellerNavbar";
+import AdminNavbar from "./components/navbar/AdminNavbar";
+import SellerNavbar from "./components/navbar/SellerNavbar";
+import AdminProperties from "./pages/admin/AdminProperties";
+import AdminPropertyDetails from "./pages/admin/AdminPropertyDetails";
 import ChatScreen from "./pages/Chat";
 import EditPropertyForm from "./pages/seller/EditPropertyForm";
 import Services from "./pages/Services";
-import AdminProperties from "./pages/admin/AdminProperties";
-import AdminPropertyDetails from "./pages/admin/AdminPropertyDetails";
+import Navbar from "./components/navbar/Navbar";
+import ServiceDetails from "./pages/ServiceDetails";
+import ServiceHome from "./pages/service/ServiceHome";
+import AdminCategories from "./pages/admin/AdminCategories";
+import AdminReports from "./pages/admin/AdminReports";
 
 function App() {
   return (
@@ -39,6 +45,10 @@ function App() {
                   <Route path="/services" element={<Services />} />
                   <Route path="/property/:id" element={<PropertyDetails />} />
                   <Route path="/chat" element={<ChatScreen />} />
+                  <Route
+                    path="/service-details/:id"
+                    element={<ServiceDetails />}
+                  />
                 </Routes>
               </>
             }
@@ -48,13 +58,13 @@ function App() {
             path="/seller/*"
             element={
               <>
-                <SellerNavbar />
+                <Navbar />
                 <Routes>
                   <Route
                     path="/"
                     element={<PropertiesList isSeller={true} />}
                   />
-                  <Route path="/inbox" element={<ChatScreen />} />
+
                   <Route
                     path="/estates/:id/edit"
                     element={<EditPropertyForm />}
@@ -83,13 +93,27 @@ function App() {
             path="/admin/*"
             element={
               <>
-                {/* <AdminNavbar /> */}
+                <Navbar />
                 <Routes>
                   <Route path="/" element={<AdminProperties />} />
+
                   <Route
                     path="/property/:id"
                     element={<AdminPropertyDetails />}
                   />
+                  <Route path="/categories" element={<AdminCategories />} />
+                  <Route path="/reports" element={<AdminReports />} />
+                </Routes>
+              </>
+            }
+          />
+          <Route
+            path="/service/*"
+            element={
+              <>
+                <Navbar />
+                <Routes>
+                  <Route path="/" element={<ServiceHome />} />
                 </Routes>
               </>
             }

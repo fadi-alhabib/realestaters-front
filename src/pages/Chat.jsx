@@ -11,6 +11,7 @@ import {
   Grid,
   GridItem,
   Spinner,
+  Badge,
 } from "@chakra-ui/react";
 import { FaPaperPlane } from "react-icons/fa";
 import apiService from "../services/api-service";
@@ -149,7 +150,19 @@ const ChatScreen = () => {
               onClick={() => handleChatSelect(chat)}
             >
               <Avatar src={chat.user.profile_image} name={chat.user.fullname} />
-              <Text fontWeight="bold">{chat.user.fullname}</Text>
+              <VStack>
+                <Text fontWeight="bold">{chat.user.fullname}</Text>
+                <Badge
+                  colorScheme={
+                    selectedChat && selectedChat.user.id === chat.user.id
+                      ? "black"
+                      : "purple"
+                  }
+                  p={2}
+                >
+                  {chat.user.type}
+                </Badge>
+              </VStack>
             </HStack>
           ))}
         </VStack>

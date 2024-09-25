@@ -94,7 +94,7 @@ export default function ServiceDetails() {
               alt={service.extras.name}
               objectFit="cover"
             />
-            <Badge colorScheme="purple">{service.extras.category}</Badge>
+            <Badge colorScheme="purple">{service.extras.category.name}</Badge>
             <Heading as="h1" size="xl">
               {service.extras.name}
             </Heading>

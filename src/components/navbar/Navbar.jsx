@@ -1,8 +1,7 @@
-import { Box } from "@chakra-ui/react";
-import React from "react";
-import SellerNavbar from "./SellerNavbar";
 import AdminNavbar from "./AdminNavbar";
 import CustomerNavbar from "./CustomerNavbar";
+import ManagerNavbar from "./ManagerNavbar";
+import SellerNavbar from "./SellerNavbar";
 import ServiceNavbar from "./ServiceNavbar";
 
 export default function Navbar() {
@@ -19,6 +18,8 @@ export default function Navbar() {
       case "ServiceAdmin":
         return <ServiceNavbar />;
 
+      case "Manager":
+        return <ManagerNavbar />;
       default:
         return <CustomerNavbar />;
     }

@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
 import Footer from "./components/Footer";
-import CustomerNavbar from "./components/navbar/CustomerNavbar";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import PropertyDetails from "./pages/PropertyDetails";
@@ -13,18 +12,17 @@ import EstateForm from "./pages/seller/add-estate/EstateForm";
 import SelectLocation from "./pages/seller/add-estate/SelectLocation";
 import EstateImageUpload from "./pages/seller/add-estate/UploadEstateImages";
 
-import AdminNavbar from "./components/navbar/AdminNavbar";
-import SellerNavbar from "./components/navbar/SellerNavbar";
+import Navbar from "./components/navbar/Navbar";
+import AdminCategories from "./pages/admin/AdminCategories";
 import AdminProperties from "./pages/admin/AdminProperties";
 import AdminPropertyDetails from "./pages/admin/AdminPropertyDetails";
+// import AdminReports from "./pages/admin/AdminReports";
 import ChatScreen from "./pages/Chat";
 import EditPropertyForm from "./pages/seller/EditPropertyForm";
-import Services from "./pages/Services";
-import Navbar from "./components/navbar/Navbar";
-import ServiceDetails from "./pages/ServiceDetails";
 import ServiceHome from "./pages/service/ServiceHome";
-import AdminCategories from "./pages/admin/AdminCategories";
-import AdminReports from "./pages/admin/AdminReports";
+import ServiceDetails from "./pages/ServiceDetails";
+import Services from "./pages/Services";
+import AdminManagers from "./pages/admin/AdminManagers";
 
 function App() {
   return (
@@ -102,7 +100,8 @@ function App() {
                     element={<AdminPropertyDetails />}
                   />
                   <Route path="/categories" element={<AdminCategories />} />
-                  <Route path="/reports" element={<AdminReports />} />
+                  <Route path="/managers" element={<AdminManagers />} />
+                  {/* <Route path="/reports" element={<AdminReports />} /> */}
                 </Routes>
               </>
             }
@@ -114,6 +113,17 @@ function App() {
                 <Navbar />
                 <Routes>
                   <Route path="/" element={<ServiceHome />} />
+                </Routes>
+              </>
+            }
+          />
+          <Route
+            path="/manager/*"
+            element={
+              <>
+                <Navbar />
+                <Routes>
+                  <Route path="/" element={<AdminProperties />} />
                 </Routes>
               </>
             }

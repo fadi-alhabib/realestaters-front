@@ -15,7 +15,7 @@ import useServices from "../hooks/useServices";
 import ServiceCard from "../components/ServiceCard";
 
 const Services = () => {
-  const { data, error, isLoading } = useServices("extras/");
+  const { data, error, isLoading } = useServices();
 
   return (
     <Container maxW="container.xl" p={4}>

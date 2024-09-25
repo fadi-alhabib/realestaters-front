@@ -44,9 +44,9 @@ const AdminNavbar = () => {
           <CustomLink to={"/admin/categories"}>
             <Text>Categories</Text>
           </CustomLink>
-          {/* <CustomLink to={"/admin/reports"}>
-            <Text>Reports</Text>
-          </CustomLink> */}
+          <CustomLink to={"/admin/managers"}>
+            <Text>Managers</Text>
+          </CustomLink>
         </HStack>
         <Button bgColor={"brand"} onClick={handleLogout}>
           Logout

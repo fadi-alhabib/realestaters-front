@@ -7,13 +7,10 @@ import {
   FormLabel,
   Heading,
   Input,
-  Radio,
-  RadioGroup,
-  Stack,
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import apiService from "../services/api-service";
 
@@ -53,6 +50,8 @@ function LoginForm() {
           navigate("/admin");
         } else if (response.data.user.type === "ServiceAdmin") {
           navigate("/service");
+        } else if (response.data.user.type === "Manager") {
+          navigate("/manager");
         } else {
           navigate("/");
         }
